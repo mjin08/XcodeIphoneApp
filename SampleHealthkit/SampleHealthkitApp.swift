@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct SampleHealthkitApp: App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppView()
+//            DoubleStandView()
+//            MainView()
+            
         }
     }
 }
