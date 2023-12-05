@@ -13,6 +13,7 @@ import UIKit
 class Healthstore: ObservableObject{
     @Published var speedData: [[String: Any]] = [];
     @Published var asymmetryData: [[String: Any]] = [];
+    @Published var dst: [[String: Any]] = [];
     @Published var isAuthorized: Bool = false
     var healthStore: HKHealthStore
     //iphone_id is the vendorID
@@ -48,8 +49,11 @@ class Healthstore: ObservableObject{
         guard let speed = HKQuantityType.quantityType(forIdentifier: .walkingSpeed)else{
             fatalError("*** Unable to create a speed type ***")
         }
+        guard let dst = HKQuantityType.quantityType(forIdentifier: .walkingDoubleSupportPercentage)else{
+            fatalError("*** Unable to create a double support percentage type ***")
+        }
         print("authorized status:", isAuthorized)
-        healthStore.requestAuthorization(toShare: [], read: [speed, asymmetry]){ (success, error) in
+        healthStore.requestAuthorization(toShare: [], read: [speed, asymmetry, dst]){ (success, error) in
             if !success {
                 fatalError("*** Unable to requestAuthorization for speed ***")
             }
@@ -94,7 +98,7 @@ class Healthstore: ObservableObject{
                     
                     // Use speedData or pass it to another function
                     // e.g., update a @Published property in your ViewModel
-                    print(self.speedData)
+                    // print(self.speedData)
                     self.tryToPostPatient()
                     
                // postPatient(speedData: self.speedData)
@@ -141,7 +145,7 @@ class Healthstore: ObservableObject{
                     
                     // Use asymmetryData or pass it to another function
                     // e.g., update a @Published property in your ViewModel
-                    print(self.asymmetryData)
+                    // print(self.asymmetryData)
                     self.tryToPostPatient()
                     
                     // Uncomment the following line if you want to perform some action with the asymmetry data
@@ -152,12 +156,62 @@ class Healthstore: ObservableObject{
         }
     }
     
+    func getDST() {
+        print("Get DST data")
+
+        guard let dstType = HKQuantityType.quantityType(forIdentifier: .walkingDoubleSupportPercentage) else {
+            fatalError("*** Unable to create a DST type ***")
+        }
+
+        let calendar = Calendar.current
+        let now = Date()
+
+        if let yesterday = calendar.date(byAdding: .day, value: -1, to: now) { // Get the date for yesterday
+            let startOfDay = calendar.startOfDay(for: yesterday)
+            let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+            
+            let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
+
+            let dateFormatter = ISO8601DateFormatter()
+
+            let query = HKSampleQuery(
+                sampleType: dstType,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: [NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: true)]) { query, results, error in
+                    if let samples = results as? [HKQuantitySample] {
+                        // Handle the raw DST data for yesterday
+                        for sample in samples {
+                            let dstValue = sample.quantity.doubleValue(for: .percent())
+                            let dateString = dateFormatter.string(from: sample.startDate)
+
+                            let dataPoint: [String: Any] = ["value": dstValue, "timestamp": dateString]
+                            self.dst.append(dataPoint)
+                        }
+                    }
+
+                    // Use dst or pass it to another function
+                    // e.g., update a @Published property in your ViewModel
+//                    print(self.dst)
+                    self.tryToPostPatient()
+                    // Perform any additional actions with DST data
+
+                    // Uncomment the following line if you want to perform some action with the DST data
+                    // postDSTData(dstData: self.dst)
+                }
+
+            healthStore.execute(query)
+        }
+    }
+
+
+    
     func tryToPostPatient() {
-        if !speedData.isEmpty && !asymmetryData.isEmpty {
-            print("Both speed and asymmetry data obtained. Calling postPatient.")
+        if !speedData.isEmpty && !asymmetryData.isEmpty && !dst.isEmpty {
+            print("Both speed ,asymmetry, and dst data obtained. Calling postPatient.")
 //            print("speed: ", speedData)
 //            print("asymmetry: ", asymmetryData)
-            postPatient(speedData: speedData, asymmetryData: asymmetryData)
+            postPatient(speedData: speedData, asymmetryData: asymmetryData, dst: dst)
         } else {
             print("Waiting for either speed or asymmetry data...")
         }
@@ -165,14 +219,32 @@ class Healthstore: ObservableObject{
 
         
 
-    func postPatient(speedData: [[String: Any]], asymmetryData:[[String: Any]]) {
+    func postPatient(speedData: [[String: Any]], asymmetryData:[[String: Any]], dst:[[String: Any]]) {
             
             print("in postPatient\n", speedData[1])
             print("asymmetryData: ", asymmetryData[1])
+            print("dst: ", dst[1])
             print("vendorId", vendorID)
             print("Patient ID", patientID)
+        
+        var tdate: String
+        
+        tdate = ""
+        
+        
+        if let timestamp = speedData[1]["timestamp"] as? String {
+                let dateFormatter = ISO8601DateFormatter()
+                if let date = dateFormatter.date(from: timestamp) {
+                    let dayFormatter = DateFormatter()
+                    dayFormatter.dateFormat = "yyyy-MM-dd"
+
+                    tdate = dayFormatter.string(from: date)
+                    print("Day extracted from timestamp:", tdate)
+
+                }
+            }
             
-            let dateFormatter = ISO8601DateFormatter()
+            
             
             // Define the request body
             let parameters: [String: Any] = [
@@ -180,8 +252,8 @@ class Healthstore: ObservableObject{
                 "iPhone_id": vendorID,
                 "dailyData": [
                     [
-                        "date": dateFormatter.string(from: Date()),
-                        "DST": [],
+                        "date": tdate,
+                        "DST": dst,
                         "Speed": speedData,
                         "Asymetry": asymmetryData,
                         "Stride": []
@@ -218,7 +290,7 @@ class Healthstore: ObservableObject{
                         }
                         print("Error in POST request: \(error)")
                         return
-                    }
+                }
                     
                 //    if let response = response as? HTTPURLResponse {
                 //        if response.statusCode == 400{
@@ -251,13 +323,7 @@ class Healthstore: ObservableObject{
         if(patientID != "000"){
             getSpeed()
             getWalkingAsymmetryPercentage()
-//            if(!speedData.isEmpty){
-//                print("speed: ", speedData)
-//                print("asymmetry: ", asymmetryData)
-//            }else{
-//                print("speed data is empty")
-//            }
-//            postPatient(speedData: speedData, asymmetryData: asymmetryData)
+            getDST()
         }else{
             fatalError("*** did not input patient ID")
         }

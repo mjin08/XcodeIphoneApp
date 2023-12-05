@@ -8,30 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		B10B05F32AC02659006AC903 /* SampleHealthkitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B05F22AC02659006AC903 /* SampleHealthkitApp.swift */; };
-		B10B05F52AC02659006AC903 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10B05F42AC02659006AC903 /* ContentView.swift */; };
 		B10B05F72AC0265A006AC903 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10B05F62AC0265A006AC903 /* Assets.xcassets */; };
 		B10B05FB2AC0265A006AC903 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10B05FA2AC0265A006AC903 /* Preview Assets.xcassets */; };
-		B14EAF182AF09093009CA5A1 /* DoubleStandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14EAF172AF09093009CA5A1 /* DoubleStandView.swift */; };
 		B14EAF1A2AF090E5009CA5A1 /* Healthstore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14EAF192AF090E5009CA5A1 /* Healthstore.swift */; };
 		B14EAF1C2AF4C8A4009CA5A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14EAF1B2AF4C8A4009CA5A1 /* MainView.swift */; };
-		B162C3182AC3795B00618139 /* HealthStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162C3172AC3795B00618139 /* HealthStore.swift */; };
 		B1E343E72B0476CA00B20402 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E343E62B0476CA00B20402 /* AppView.swift */; };
-		B1E961292ACC7A3F0038A5F8 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1E961282ACC7A3F0038A5F8 /* Step.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B10B05EF2AC02659006AC903 /* SampleHealthkit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleHealthkit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10B05F22AC02659006AC903 /* SampleHealthkitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHealthkitApp.swift; sourceTree = "<group>"; };
-		B10B05F42AC02659006AC903 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B10B05F62AC0265A006AC903 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B10B05F82AC0265A006AC903 /* SampleHealthkit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleHealthkit.entitlements; sourceTree = "<group>"; };
 		B10B05FA2AC0265A006AC903 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B14EAF172AF09093009CA5A1 /* DoubleStandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleStandView.swift; sourceTree = SOURCE_ROOT; };
 		B14EAF192AF090E5009CA5A1 /* Healthstore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Healthstore.swift; path = ../Healthstore.swift; sourceTree = "<group>"; };
 		B14EAF1B2AF4C8A4009CA5A1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		B162C3172AC3795B00618139 /* HealthStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthStore.swift; sourceTree = "<group>"; };
 		B1E343E62B0476CA00B20402 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
-		B1E961282ACC7A3F0038A5F8 /* Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,13 +56,10 @@
 		B10B05F12AC02659006AC903 /* SampleHealthkit */ = {
 			isa = PBXGroup;
 			children = (
-				B1E961272ACC7A200038A5F8 /* Models */,
 				B10B05F22AC02659006AC903 /* SampleHealthkitApp.swift */,
-				B10B05F42AC02659006AC903 /* ContentView.swift */,
 				B10B05F62AC0265A006AC903 /* Assets.xcassets */,
 				B10B05F82AC0265A006AC903 /* SampleHealthkit.entitlements */,
 				B10B05F92AC0265A006AC903 /* Preview Content */,
-				B14EAF172AF09093009CA5A1 /* DoubleStandView.swift */,
 				B14EAF192AF090E5009CA5A1 /* Healthstore.swift */,
 				B14EAF1B2AF4C8A4009CA5A1 /* MainView.swift */,
 				B1E343E62B0476CA00B20402 /* AppView.swift */,
@@ -84,15 +73,6 @@
 				B10B05FA2AC0265A006AC903 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		B1E961272ACC7A200038A5F8 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				B162C3172AC3795B00618139 /* HealthStore.swift */,
-				B1E961282ACC7A3F0038A5F8 /* Step.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,13 +145,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B10B05F52AC02659006AC903 /* ContentView.swift in Sources */,
 				B14EAF1C2AF4C8A4009CA5A1 /* MainView.swift in Sources */,
-				B1E961292ACC7A3F0038A5F8 /* Step.swift in Sources */,
-				B14EAF182AF09093009CA5A1 /* DoubleStandView.swift in Sources */,
 				B1E343E72B0476CA00B20402 /* AppView.swift in Sources */,
 				B14EAF1A2AF090E5009CA5A1 /* Healthstore.swift in Sources */,
-				B162C3182AC3795B00618139 /* HealthStore.swift in Sources */,
 				B10B05F32AC02659006AC903 /* SampleHealthkitApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
